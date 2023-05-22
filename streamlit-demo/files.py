@@ -27,6 +27,7 @@ from loaders.html import (
 )
 from loaders.powerpoint import process_powerpoint
 from loaders.docx import process_docx
+from loaders.epub import process_epub
 from utils import compute_sha1_from_content
 
 
@@ -47,7 +48,8 @@ file_processors = {
     ".pdf": process_pdf,
     ".html": process_html,
     ".pptx": process_powerpoint,
-    ".docx": process_docx
+    ".docx": process_docx,
+    ".epub": process_epub
 }
 
 def file_uploader(supabase, vector_store):
