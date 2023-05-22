@@ -38,6 +38,7 @@ async def process_audio(upload_file: UploadFile, stats_db):
     # uploaded file to file object
 
     openai_api_key = os.environ.get("OPENAI_API_KEY")
+    openai_api_base = os.environ.get("OPENAI_API_BASE")
 
     # Here, we're writing the uploaded file to a temporary file, so we can use it with your existing code.
     with tempfile.NamedTemporaryFile(delete=False, suffix=upload_file.filename) as tmp_file:

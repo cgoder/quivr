@@ -10,12 +10,12 @@ from langchain.chat_models.anthropic import ChatAnthropic
 from utils import ChatMessage
 import llm.LANGUAGE_PROMPT as LANGUAGE_PROMPT
 
-
+openai_api_base = os.environ.get("OPENAI_API_BASE")
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 anthropic_api_key = os.environ.get("ANTHROPIC_API_KEY")
 supabase_url = os.environ.get("SUPABASE_URL")
 supabase_key = os.environ.get("SUPABASE_SERVICE_KEY")
-embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+embeddings = OpenAIEmbeddings(openai_api_base=openai_api_base,openai_api_key=openai_api_key)
 supabase_client: Client = create_client(supabase_url, supabase_key)
 vector_store = SupabaseVectorStore(
     supabase_client, embeddings, table_name="documents")
@@ -30,7 +30,7 @@ def get_qa_llm(chat_message: ChatMessage):
     if chat_message.model.startswith("gpt"):
         qa = ConversationalRetrievalChain.from_llm(
             OpenAI(
-                model_name=chat_message.model, openai_api_key=openai_api_key, temperature=chat_message.temperature, max_tokens=chat_message.max_tokens), vector_store.as_retriever(), memory=memory, verbose=False, max_tokens_limit=1024)
+                model_name=chat_message.model,openai_api_base=openai_api_base, openai_api_key=openai_api_key, temperature=chat_message.temperature, max_tokens=chat_message.max_tokens), vector_store.as_retriever(), memory=memory, verbose=False, max_tokens_limit=1024)
     elif anthropic_api_key and chat_message.model.startswith("claude"):
         qa = ConversationalRetrievalChain.from_llm(
             ChatAnthropic(
